@@ -1,0 +1,1 @@
+(()=>{const e=chrome.runtime.connect({name:"global-oss-devtools-page"});setTimeout((()=>{e.postMessage({tabId:chrome.devtools.inspectedWindow.tabId})}),100)})();

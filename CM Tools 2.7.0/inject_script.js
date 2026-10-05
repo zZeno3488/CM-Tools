@@ -1,0 +1,1 @@
+console.debug("[global-oss-plguin] chrome extension inject variables"),window.__GLOBAL_OSS_CHROME__=!0,window.__GLOBAL_OSS_CHROME_VERSION__="1.5.0";

@@ -1,0 +1,121 @@
+{
+  "manifest_version": 3,
+  "name": "CM Tools",
+  "version": "2.7.0",
+  "description": "Merged Global OSS metrics & CM Tools auditing suite: button lockouts, timer, shortcuts, pending monitor, 9-grid, clock, and Red-line alerts.",
+  "background": {
+    "service_worker": "background.js"
+  },
+  "devtools_page": "devtools.html",
+  "permissions": [
+    "contextMenus",
+    "privacy",
+    "management",
+    "storage",
+    "tabs",
+    "cookies",
+    "activeTab",
+    "alarms",
+    "webNavigation",
+    "tabCapture",
+    "notifications",
+    "desktopCapture",
+    "webRequest",
+    "scripting",
+    "downloads"
+  ],
+  "host_permissions": [
+    "<all_urls>",
+    "*://*/*"
+  ],
+  "action": {
+    "default_title": "CM Tools",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon.png",
+      "48": "icon.png",
+      "128": "icon.png"
+    }
+  },
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "include_globs": [
+        "*://localhost:*/*",
+        "*://*global-oss*.*/*",
+        "*://*tagging*.*/*",
+        "*://*atlas*.*/*",
+        "*://*talego*.*/*",
+        "*://*.uhgzgnb.com/*",
+        "*://*.cloudfront.net/v2/front_end/*",
+        "*://*.uhgzgnb.ru/*",
+        "*://*.zmqdez.com/*"
+      ],
+      "run_at": "document_start",
+      "js": [
+        "content.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://global-oss-sg.uhgzgnb.com/*",
+        "https://global-oss-sg.zmqdez.com/*",
+        "https://*.zmqdez.com/*",
+        "https://*.uhgzgnb.com/*"
+      ],
+      "js": [
+        "gray_frame.js",
+        "ig_3sec_block.js",
+        "shortcut_key_ok.js",
+        "pending_monitor.js",
+        "auto_mute.js",
+        "health_reminder.js",
+        "grid_tool.js",
+        "style_injector.js",
+        "digital_clock.js",
+        "redline_alert.js"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://global-oss-sg.uhgzgnb.com/v2/front_end/*",
+        "https://global-oss-sg.zmqdez.com/v2/front_end/*",
+        "https://*.zmqdez.com/v2/front_end/*",
+        "https://*.uhgzgnb.com/v2/front_end/*"
+      ],
+      "js": [
+        "persistent_timer.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "inject_script.js"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+  "externally_connectable": {
+    "matches": [
+      "*://*.uhgzgnb.com/*",
+      "*://*.zmqdez.com/*",
+      "*://bggray-global-oss.bigo.tv/*",
+      "*://global-oss.bigo.tv/*",
+      "*://global-oss.hzmk.site/*",
+      "*://global-oss.ukyuh.tech/*"
+    ]
+  }
+}

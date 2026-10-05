@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CM Tools</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            width: 260px;
+            padding: 15px;
+            background-color: #1e1e1e;
+            color: #ffffff;
+            margin: 0;
+        }
+        h3 {
+            text-align: center; color: #00ffff; margin-top: 0; margin-bottom: 20px;
+            border-bottom: 1px solid #333; padding-bottom: 10px;
+        }
+        .toggle-row {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;
+        }
+        .toggle-row:last-child { margin-bottom: 0; }
+        .label { font-size: 13px; font-weight: bold; }
+        .switch { position: relative; display: inline-block; width: 40px; height: 20px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #555; transition: .3s; border-radius: 20px;
+        }
+        .slider:before {
+            position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px;
+            background-color: white; transition: .3s; border-radius: 50%;
+        }
+        input:checked + .slider { background-color: #00ffff; }
+        input:checked + .slider:before { transform: translateX(20px); }
+        
+        .key-config {
+            background: #1b263b; padding: 10px; border-radius: 6px; margin-bottom: 15px;
+            display: flex; flex-direction: column; gap: 8px; border: 1px solid #415a77;
+        }
+        .key-row { display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
+        .key-input { 
+            width: 65px; background: #0d1b2a; color: #00ffff; border: 1px solid #00ffff; 
+            text-align: center; border-radius: 4px; padding: 4px 0; cursor: pointer;
+            font-family: 'Arial', sans-serif; font-size: 12px; font-weight: bold;
+        }
+        .key-input:focus { background-color: #00ffff; color: #000; outline: none; }
+        .key-input::placeholder { color: #00ffff; opacity: 0.6; }
+        
+        .sound-select {
+            background: #0d1b2a; color: #00ffff; border: 1px solid #00ffff;
+            border-radius: 4px; padding: 3px 6px; font-size: 11px; font-weight: bold;
+            cursor: pointer; outline: none;
+        }
+        .test-btn {
+            background: #00ffff; color: #000; border: none; border-radius: 4px;
+            padding: 3px 8px; font-size: 11px; font-weight: bold; cursor: pointer;
+        }
+        .test-btn:active { transform: scale(0.95); }
+
+        .section-title {
+            font-size: 11px; color: #888; margin: 15px 0 8px 0; 
+            border-bottom: 1px solid #333; padding-bottom: 4px; text-transform: uppercase;
+        }
+
+        .tag-input {
+            width: 80px; background: #0d1b2a; color: #00ffff; border: 1px solid #00ffff;
+            text-align: center; border-radius: 4px; padding: 3px 0; cursor: text;
+            font-family: 'Arial', sans-serif; font-size: 11px; font-weight: bold;
+        }
+        .tag-input:focus { background-color: #00ffff; color: #000; outline: none; }
+
+        .mini-btn {
+            background: #1b263b; color: #00ffff; border: 1px solid #00ffff; 
+            border-radius: 4px; cursor: pointer; padding: 2px 6px; font-size: 11px;
+        }
+        .mini-btn:active { background: #00ffff; color: #000; }
+    </style>
+</head>
+<body>
+    <h3>CM Tools Menu</h3>
+
+    <div class="toggle-row">
+        <span class="label">Small Pending Widget</span>
+        <label class="switch"><input type="checkbox" id="enablePendingWidget"><span class="slider"></span></label>
+    </div>
+    <div class="toggle-row">
+        <span class="label">Huge Center Alert</span>
+        <label class="switch"><input type="checkbox" id="enableLargeAlert"><span class="slider"></span></label>
+    </div>
+    <div class="toggle-row">
+        <span class="label">Red-Line Risk Alert</span>
+        <label class="switch"><input type="checkbox" id="enableRedlineAlert"><span class="slider"></span></label>
+    </div>
+    <div class="toggle-row">
+        <span class="label">Auto-Mute Video</span>
+        <label class="switch"><input type="checkbox" id="enableAutoMute"><span class="slider"></span></label>
+    </div>
+    <div class="toggle-row">
+        <span class="label">Health Reminder (45m)</span>
+        <label class="switch"><input type="checkbox" id="enableReminder"><span class="slider"></span></label>
+    </div>
+    <div class="toggle-row">
+        <span class="label">Duration Timer</span>
+        <label class="switch"><input type="checkbox" id="enableTimer"><span class="slider"></span></label>
+    </div>
+    
+    <div class="toggle-row" style="margin-bottom: 8px;">
+        <span class="label">Case Arrival Sound</span>
+        <label class="switch"><input type="checkbox" id="enableCaseSound"><span class="slider"></span></label>
+    </div>
+    <div class="key-config" id="soundConfigBox" style="display: none;">
+        <div class="key-row">
+            <span>Chime Style</span>
+            <div style="display: flex; gap: 5px;">
+                <select id="caseSoundType" class="sound-select">
+                    <option value="chime">Crisp Chime</option>
+                    <option value="bell">Bright Bell</option>
+                    <option value="double">Double Beep</option>
+                    <option value="arcade">Arcade Coin</option>
+                </select>
+                <button id="testSoundBtn" class="test-btn" title="Preview sound">Test</button>
+            </div>
+        </div>
+        <div class="key-row">
+            <span>Volume (<span id="volVal">70</span>%)</span>
+            <input type="range" id="caseSoundVolume" min="10" max="100" value="70" style="width: 110px; accent-color: #00ffff; cursor: pointer;">
+        </div>
+    </div>
+
+    <div class="toggle-row">
+        <span class="label">Shift Action Tracker</span>
+        <label class="switch"><input type="checkbox" id="enableTracker"><span class="slider"></span></label>
+    </div>
+    
+    <div class="toggle-row" style="margin-bottom: 8px;">
+        <span class="label">Keyboard Shortcuts</span>
+        <label class="switch"><input type="checkbox" id="enableShortcuts"><span class="slider"></span></label>
+    </div>
+    
+    <div class="key-config" id="keyConfigBox" style="display: none;">
+        <div class="key-row"><span>Ignore</span> <input type="text" id="keyIgnore" class="key-input" readonly title="Click to bind a new key"></div>
+        <div class="key-row"><span>Punish</span> <input type="text" id="keyPunish" class="key-input" readonly title="Click to bind a new key"></div>
+        <div class="key-row"><span>Screen Shield</span> <input type="text" id="keyShield" class="key-input" readonly title="Click to bind a new key"></div>
+        <div class="key-row"><span>Tiered Punish</span> <input type="text" id="keyTiered" class="key-input" readonly title="Click to bind a new key"></div>
+        <div class="key-row"><span>OK / Submit</span> <input type="text" id="keyOk" class="key-input" readonly title="Click to bind a new key"></div>
+        <div class="key-row"><span>Scroll to Top</span> <input type="text" id="keyScrollTop" class="key-input" readonly title="Click to bind a new key"></div>
+    </div>
+
+    <div class="section-title">Button Lockouts</div>
+    <div class="toggle-row">
+        <span class="label">Lock Duration (seconds)</span>
+        <input type="number" id="lockDuration" class="key-input" min="1" max="60" style="width: 45px; text-align: center; cursor: text;">
+    </div>
+    <div class="toggle-row">
+        <span class="label">Lock Ignore</span>
+        <label class="switch"><input type="checkbox" id="lockIgnore"><span class="slider"></span></label>
+    </div>
+    <div class="toggle-row">
+        <span class="label">Lock Punish</span>
+        <label class="switch"><input type="checkbox" id="lockPunish"><span class="slider"></span></label>
+    </div>
+    <div class="toggle-row">
+        <span class="label">Lock Tiered</span>
+        <label class="switch"><input type="checkbox" id="lockTiered"><span class="slider"></span></label>
+    </div>
+    <div class="toggle-row">
+        <span class="label">Lock Shield</span>
+        <label class="switch"><input type="checkbox" id="lockShield"><span class="slider"></span></label>
+    </div>
+
+    <div class="section-title">Misc</div>
+    
+    <div class="toggle-row">
+        <span class="label">Custom CSS (Stylus)</span>
+        <div style="display: flex; gap: 5px; align-items: center;">
+            <button id="toggleCssBtn" class="mini-btn" title="Open/Close CSS Editor">Edit</button>
+            <button id="resetCssBtn" class="mini-btn" title="Restore Default CSS">Reset</button>
+            <label class="switch"><input type="checkbox" id="enableCustomStyle"><span class="slider"></span></label>
+        </div>
+    </div>
+    <textarea id="cssEditor" placeholder="/* Paste your custom CSS here */" style="display: none; width: 93%; height: 160px; margin-bottom: 12px; background: #0d1b2a; color: #00ffcc; border: 1px solid #415a77; border-radius: 4px; padding: 8px; font-family: monospace; font-size: 11px; resize: vertical;" spellcheck="false"></textarea>
+
+    <div class="toggle-row">
+        <span class="label">Rotatable 9-Grid</span>
+        <label class="switch"><input type="checkbox" id="enableGridTool"><span class="slider"></span></label>
+    </div>
+    <div class="toggle-row">
+        <span class="label">Digital Clock</span>
+        <label class="switch"><input type="checkbox" id="enableClock"><span class="slider"></span></label>
+    </div>
+    <div class="toggle-row">
+        <span class="label">Clock: 24-Hour Format</span>
+        <label class="switch"><input type="checkbox" id="use24HourClock"><span class="slider"></span></label>
+    </div>
+    <div class="toggle-row">
+        <span class="label">Tag Injector</span>
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <input type="text" id="customTagText" class="tag-input" placeholder="BD-GX3488" title="Type custom tag text here">
+            <label class="switch"><input type="checkbox" id="enableTag"><span class="slider"></span></label>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
